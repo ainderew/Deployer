@@ -1,9 +1,9 @@
 {
   "private": true,
-  "name": "my-nextron-app",
+  "name": "theoria_deployer",
   "description": "My application description",
   "version": "1.0.0",
-  "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
+  "author": "andrew pinon",
   "main": "app/background.js",
   "scripts": {
     "dev": "nextron",
@@ -11,8 +11,12 @@
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
+    "@ant-design/cssinjs": "^1.18.0-alpha.0",
+    "@ant-design/icons": "^5.2.6",
+    "antd": "^5.11.1",
     "electron-serve": "^1.1.0",
-    "electron-store": "^8.1.0"
+    "electron-store": "^8.1.0",
+    "sqlite3": "^5.1.6"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",

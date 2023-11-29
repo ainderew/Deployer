@@ -1,40 +1,60 @@
-import React from 'react'
-import Head from 'next/head'
-import Link from 'next/link'
-import Image from 'next/image'
-import { IpcHandler } from '../../main/preload'
+import React, { useContext} from "react";
+import CreateEnvironmentModal from "../components/modal/createEnvironment/createEnvironment";
+import useCreateEnvironment, {
+  EnvironmentForm,
+} from "../components/modal/createEnvironment/useCreateEnvironment";
+import EnvironmentCard from "../components/environment/environmentCard";
 
-export default function HomePage() {
+import { Context } from "./_app";
+import { useRedirectToEnvironment } from "../hooks/useRoute";
+
+function HomePage(): React.ReactElement {
+  const { toggleShow, show, formData, handleOnChange, saveEnvironment,toggleDatabaseReset } =
+    useCreateEnvironment();
+  const [_, setLoading,environments] = useContext(Context);
+
+
+  const {redirectToEnvironment} = useRedirectToEnvironment()
+ 
   return (
-    <React.Fragment>
-      <Head>
-        <title>Home - Nextron (with-tailwindcss)</title>
-      </Head>
-      <div className="grid grid-col-1 text-2xl w-full text-center">
-        <div>
-          <Image
-            className="ml-auto mr-auto"
-            src="/images/logo.png"
-            alt="Logo image"
-            width="256px"
-            height="256px"
+    <div className='w-full h-screen flex justify-center items-center p-12 relative'>
+      <div className='w-2/3 h-full flex flex-col gap-8'>
+        <div className='flex gap-2'>
+          <input
+            type='text'
+            className='w-full h-10 rounded-lg border-[1px] outline-none'
           />
+          <button
+            onClick={toggleShow}
+            className='bg-[#171717] rounded-md text-sm text-white h-10 whitespace-nowrap px-6'
+          >
+            Add Environment
+          </button>
         </div>
-        <span>⚡ Electron ⚡</span>
-        <span>+</span>
-        <span>Next.js</span>
-        <span>+</span>
-        <span>tailwindcss</span>
-        <span>=</span>
-        <span>💕 </span>
+
+        <div className='grid xl:grid-cols-3 auto-rows-auto gap-4 shrink-0'>
+          {environments.map((environment: EnvironmentForm) => {
+            return (
+              <EnvironmentCard
+                redirectToEnvironment={redirectToEnvironment}
+                environment={environment}
+              />
+            );
+          })}
+        </div>
       </div>
 
-      <button className="">test</button>
-      <div className="mt-1 w-full flex-wrap flex justify-center">
-        <Link href="/next">
-          <a className="btn-blue">Go to next page</a>
-        </Link>
-      </div>
-    </React.Fragment>
-  )
+      {show && (
+        <CreateEnvironmentModal
+          toggleShow={toggleShow}
+          formData={formData}
+          handleOnChange={handleOnChange}
+          saveEnvironment={saveEnvironment}
+          toggleDatabaseReset={toggleDatabaseReset}
+        />
+      )}
+    </div>
+  );
 }
+
+export default HomePage;
